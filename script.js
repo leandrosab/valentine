@@ -6,18 +6,18 @@ function sendNotification(title, message, priority = "default", tags = "heart") 
     fetch(`https://ntfy.sh/${NTFY_TOPIC}`, {
         method: "POST",
         headers: {
-            "Title": title,
+            "Title": encodeURIComponent(title),
             "Priority": priority,
             "Tags": tags
         },
         body: message
-    }).catch(() => {}); // Fehler leise ignorieren
+    }).catch((e) => console.error("ntfy error:", e));
 }
 
 // Benachrichtigung wenn die Seite geöffnet wird
 sendNotification(
-    "💌 Seite geöffnet!",
-    `Jemand hat deine Valentine-Seite geöffnet! (${new Date().toLocaleString("de-DE")})`,
+    "Seite geoeffnet!",
+    `Jemand hat deine Valentine-Seite geoeffnet! (${new Date().toLocaleString("de-DE")})`,
     "default",
     "eyes"
 );
@@ -48,7 +48,7 @@ function handleNoClick() {
 
     // Benachrichtigung bei "No"
     sendNotification(
-        "😢 No geklickt...",
+        "No geklickt...",
         `"No" wurde geklickt (Versuch ${messageIndex}). Text: "${noButton.textContent}"`,
         "low",
         "broken_heart"
@@ -56,10 +56,10 @@ function handleNoClick() {
 }
 
 function handleYesClick() {
-    // Benachrichtigung bei "Yes" 🎉
+    // Benachrichtigung bei "Yes"
     sendNotification(
-        "💖 YES!! Sie hat JA gesagt!",
-        `JA wurde geklickt! 🎉🥳 (${new Date().toLocaleString("de-DE")})`,
+        "YES!! Sie hat JA gesagt!",
+        `JA wurde geklickt! (${new Date().toLocaleString("de-DE")})`,
         "urgent",
         "heart,tada,partying_face"
     );
